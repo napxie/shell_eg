@@ -1,0 +1,245 @@
+#!/usr/bin/expect
+set timeout 10
+set switch_a [lindex $argv 0]
+set logfile [lindex $argv 1]
+log_file -noappend -a $logfile
+spawn ./PlxCm
+
+expect {
+  "Copyright" { send "dev $switch_a\n" }
+  timeout { 
+    send_user "1.Unexpected timeout...FAIL\n"
+    exit 1
+    }
+  eof { 
+    send_user "2.Unexpected termination...FAIL\n"
+    exit 1
+    }
+}
+
+expect {
+  ">" {
+  sleep 1
+  send "vars\n" }
+  timeout { 
+    send_user "3.Unexpected timeout...FAIL\n"
+    exit 1
+    }
+  eof { 
+    send_user "4.Unexpected termination...FAIL\n"
+    exit 1
+    }
+}
+
+
+expect {
+  ">" { 
+  sleep 1
+  send "dl V0+0078 4\n" }  #port0
+  timeout { 
+    send_user "5.Unexpected timeout...FAIL\n"
+    exit 1
+    }
+  eof { 
+    send_user "6.Unexpected termination...FAIL\n"
+    exit 1
+    }
+}
+
+expect {
+  ">" { 
+  sleep 1
+  send "dl V0+4078 4\n" }  #port1
+  timeout { 
+    send_user "7.Unexpected timeout...FAIL\n"
+    exit 1
+    }
+  eof { 
+    send_user "8.Unexpected termination...FAIL\n"
+    exit 1
+    }
+}
+
+expect {
+  ">" { 
+  sleep 1 
+  send "dl V0+5078 4\n" }   #port2
+  timeout { 
+    send_user "9.Unexpected timeout...FAIL\n"
+    exit 1
+    }
+  eof { 
+    send_user "Unexpected termination...FAIL\n"
+    exit 1
+    }
+}
+
+expect {
+  ">" { 
+  sleep 1
+  send "dl V0+8078 4\n" }  #port3
+  timeout { 
+    send_user "Unexpected timeout...FAIL\n"
+    exit 1
+    }
+  eof { 
+    send_user "Unexpected termination...FAIL\n"
+    exit 1
+    }
+}
+
+expect {
+  ">" { 
+  sleep 1
+  send "dl V0+9078 4\n" }  #port4
+  timeout { 
+    send_user "Unexpected timeout...FAIL\n"
+    exit 1
+    }
+  eof { 
+    send_user "Unexpected termination...FAIL\n"
+    exit 1
+    }
+}
+
+expect {
+  ">" { 
+  sleep 1
+  send "dl V0+C078 4\n" }  #port5
+  timeout { 
+    send_user "Unexpected timeout...FAIL\n"
+    exit 1
+    }
+  eof { 
+    send_user "Unexpected termination...FAIL\n"
+    exit 1
+    }
+}
+
+expect {
+  ">" { 
+  sleep 1
+  send "dl V0+D078 4\n" }  #port6
+  timeout { 
+    send_user "Unexpected timeout...FAIL\n"
+    exit 1
+    }
+  eof { 
+    send_user "Unexpected termination...FAIL\n"
+    exit 1
+    }
+}
+
+expect {
+  ">" { 
+  sleep 1
+  send "dl V0+0BF0 8\n" }  #port0 err check
+  timeout { 
+    send_user "Unexpected timeout...FAIL\n"
+    exit 1
+    }
+  eof { 
+    send_user "Unexpected termination...FAIL\n"
+    exit 1
+    }
+}
+
+expect {
+  ">" { 
+  sleep 1
+  send "dl V0+4BF0 8\n" }  #port1 err check
+  timeout { 
+    send_user "Unexpected timeout...FAIL\n"
+    exit 1
+    }
+  eof { 
+    send_user "Unexpected termination...FAIL\n"
+    exit 1
+    }
+}
+
+expect {
+  ">" { 
+  sleep 1
+  send "dl V0+5BF0 8\n" }  #port2 err check
+  timeout { 
+    send_user "Unexpected timeout...FAIL\n"
+    exit 1
+    }
+  eof { 
+    send_user "Unexpected termination...FAIL\n"
+    exit 1
+    }
+}
+
+expect {
+  ">" { 
+  sleep 1
+  send "dl V0+8BF0 8\n" }  #port3 err check
+  timeout { 
+    send_user "Unexpected timeout...FAIL\n"
+    exit 1
+    }
+  eof { 
+    send_user "Unexpected termination...FAIL\n"
+    exit 1
+    }
+}
+
+expect {
+  ">" { 
+  sleep 1
+  send "dl V0+9BF0 8\n" }  #port4 err check
+  timeout { 
+    send_user "Unexpected timeout...FAIL\n"
+    exit 1
+    }
+  eof { 
+    send_user "Unexpected termination...FAIL\n"
+    exit 1
+    }
+}
+
+expect {
+  ">" { 
+  sleep 1
+  send "dl V0+CBF0 8\n" }  #port5 err check
+  timeout { 
+    send_user "Unexpected timeout...FAIL\n"
+    exit 1
+    }
+  eof { 
+    send_user "Unexpected termination...FAIL\n"
+    exit 1
+    }
+}
+
+expect {
+  ">" { 
+  sleep 1.5
+  send "dl V0+DBF0 8\n" }  #port6 err check
+  timeout { 
+    send_user "Unexpected timeout...FAIL\n"
+    exit 1
+    }
+  eof { 
+    send_user "Unexpected termination...FAIL\n"
+    exit 1
+    }
+}
+
+sleep 3
+
+expect {
+  ">" { 
+  sleep 1
+  send "exit\n" }
+  timeout { 
+    send_user "Unexpected timeout...FAIL\n"
+    exit 1
+    }
+  eof { 
+    send_user "Unexpected termination...FAIL\n"
+    exit 1
+    }
+}
