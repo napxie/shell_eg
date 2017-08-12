@@ -1,0 +1,1 @@
+awk 'BEGIN{printf Sr NotNametSubtMarksn} {print}' marks.txt
